@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package statestore;
+
+// This tells protoc-gen-go where to put generated Go files, and what
+// Go import path to use. Must match module name + desired subfolder.
+option go_package = "github.com/Henildiyora/nexus/internal/pb/statestore";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto"; // gives us a generic JSON-like Struct type
+
+// The service definition — this becomes an interface you implement in Go,
+// and a client stub you can call from Go, Python, etc.
+service StateStoreService {
+  rpc CreateSession (CreateSessionRequest) returns (SessionResponse);
+  rpc GetSession (GetSessionRequest) returns (SessionResponse);
+  rpc ListSessionsByTenant (ListSessionsByTenantRequest) returns (ListSessionsResponse);
+}
+
+// --- Messages (these are "structs" in protobuf language)
+
+message CreateSessionRequest {
+  string agent_id = 1;
+  string tenant_id = 2;
+  google.protobuf.Struct state = 3; // flexible JSON-like blob, maps to your JSONB
+}
+
+message GetSessionRequest {
+  string id = 1;
+  string tenant_id = 2; // still required — enforcing tenant scoping at the API level too
+}
+
+message ListSessionsByTenantRequest {
+  string tenant_id = 1;
+}
+
+message Session {
+  string id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  google.protobuf.Struct state = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message SessionResponse {
+  Session session = 1;
+}
+
+message ListSessionsResponse {
+  repeated Session sessions = 1; // "repeated" = a list/array in protobuf
+}
