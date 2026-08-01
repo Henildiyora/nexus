@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// Connect to the running gRPC server.
-	// insecure.NewCredentials() = no TLS, fine for localhost dev — NEVER use in production.
+	// insecure.NewCredentials() = no TLS, fine for localhost dev
 	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("failed to connect: %v", err)

@@ -146,3 +146,79 @@ func ListSessionsByTenant(ctx context.Context, pool *pgxpool.Pool, tenantID stri
 
 	return sessions, nil
 }
+
+// UpdateSession overwrite the state blob for an existing session and
+// bumps updated_at. Notice created_at is untouched - we only SET the
+// columns the should actually change.
+func UpdateSession(ctx context.Context, pool *pgxpool.Pool, id uuid.UUID, tenantID string, newState map[string]interface{}) error {
+	stateJSON, err := json.Marshal(newState)
+	if err != nil {
+		return fmt.Errorf("failed to marshal state: %w", err)
+	}
+
+	query := `
+	UPDATE agent_sessions
+	SET state = $1, updated_at = now()
+	WHERE id = $2 AND tenant_id = $3;
+	`
+
+	// Exec (not QueryRow) because UPDATE doesn't return roes by default.
+	tag, err := pool.Exec(ctx, query, stateJSON, id, tenantID)
+	if err != nil {
+		return fmt.Errorf("failed to update session: %w", err)
+	}
+
+	// tag.RowsAffected() tells us if the WHERE clause actually matched anything.
+	// If 0 rows were affected, either the id doesn't exist OR the tenantID was
+	// wrong — same tenant-isolation protection pattern as GetSession.
+	if tag.RowsAffected() == 0 {
+		return fmt.Errorf("no session found with id=%s for tenant=%s", id, tenantID)
+	}
+
+	return nil
+}
+
+// DeleteSession hard-deletes a session row. Tenant-scoped like everything else.
+func DeleteSession(ctx context.Context, pool *pgxpool.Pool, id uuid.UUID, tenantID string) error {
+	query := `
+		DELETE FROM agent_sessions
+		WHERE id = $1 AND tenant_id = $2;`
+
+	tag, err := pool.Exec(ctx, query, id, tenantID)
+	if err != nil {
+		return fmt.Errorf("failed to delete session: %w", err)
+	}
+
+	if tag.RowsAffected() == 0 {
+		return fmt.Errorf("no session found with id=%s for tenant=%s", id, tenantID)
+	}
+
+	return nil
+}
+
+// GetSessionAsOf fetches what a session's state looked like at a past point in time,
+// using CockroachDB's native time-travel (AS OF SYSTEM TIME) — no audit table needed.
+// `interval` is a Postgres-style interval string, e.g. "10 seconds", "5 minutes".
+func GetSessionAsOf(ctx context.Context, pool *pgxpool.Pool, id uuid.UUID, tenantID string, interval string) (*AgentSession, error) {
+	// NOTE: AS OF SYSTEM TIME can't be parameterized with $N placeholders in all
+	// drivers/positions the same way normal values can — safest reliable approach
+	// is fmt.Sprintf here since `interval` is a trusted, internally-controlled string,
+	// not raw user input passed straight through in a real API yet.
+	query := fmt.Sprintf(`
+		SELECT id, agent_id, tenant_id, state, created_at, updated_at
+		FROM agent_sessions AS OF SYSTEM TIME '-%s'
+		WHERE id = $1 AND tenant_id = $2;
+	`, interval)
+
+	var s AgentSession
+	var stateJSON []byte
+
+	err := pool.QueryRow(ctx, query, id, tenantID).Scan(
+		&s.ID, &s.AgentID, &s.TenantID, &stateJSON, &s.CreatedAt, &s.UpdatedAt,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get historical session: %w", err)
+	}
+
+	return &s, nil
+}
