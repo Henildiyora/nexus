@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/Henildiyora/nexus/internal/db"
 	"github.com/Henildiyora/nexus/internal/pb/statestore"
@@ -105,4 +106,75 @@ func (s *StateStoreServer) ListSessionsByTenant(ctx context.Context, req *states
 	}
 
 	return &statestore.ListSessionsResponse{Sessions: protoSessions}, nil
+}
+
+func (s *StateStoreServer) UpdateSession(ctx context.Context, req *statestore.UpdateSessionRequest) (*statestore.SessionResponse, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid session id: %w", err)
+	}
+
+	stateMap := req.State.AsMap()
+
+	if err := db.UpdateSession(ctx, s.Pool, id, req.TenantId, stateMap); err != nil {
+		return nil, fmt.Errorf("update session failed: %w", err)
+	}
+
+	// Featch fresh copy to return the updated row (with new updated_at)
+	session, err := db.GetSession(ctx, s.Pool, id, req.TenantId)
+	if err != nil {
+		return nil, fmt.Errorf("fetch after update failed: %w", err)
+	}
+
+	protoSession, err := toProtoSession(session)
+	if err != nil {
+		return nil, err
+	}
+
+	return &statestore.SessionResponse{Session: protoSession}, nil
+}
+
+func (s *StateStoreServer) DeleteSession(ctx context.Context, req *statestore.DeleteSessionRequest) (*statestore.DeleteSessionResponse, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid session id: %w", err)
+	}
+
+	if err := db.DeleteSession(ctx, s.Pool, id, req.TenantId); err != nil {
+		return nil, fmt.Errorf("delete session failed: %w", err)
+	}
+
+	return &statestore.DeleteSessionResponse{Sucess: true}, nil
+}
+
+// isValidInterval is a small check before we string-formate `interval`
+// into raw SQL. Only allows simple patterns like "5 seconds", "10 minutes", "2 hours".
+// This is the guardrail I flagged as a TODO back in Task 1.3 — now we actually add it.
+var isValidIntervalPattern = regexp.MustCompile(`^\d+\s+(second|seconds|minute|minutes|hour|hours)$`)
+
+func isValidInterval(interval string) bool {
+	return isValidIntervalPattern.MatchString(interval)
+}
+
+func (s *StateStoreServer) GetSessionAsOf(ctx context.Context, req *statestore.GetSessionAsOfRequest) (*statestore.SessionResponse, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid session id: %w", err)
+	}
+
+	if !isValidInterval(req.Interval) {
+		return nil, fmt.Errorf("invalid interval format: %q", req.Interval)
+	}
+
+	session, err := db.GetSessionAsOf(ctx, s.Pool, id, req.TenantId, req.Interval)
+	if err != nil {
+		return nil, fmt.Errorf("get session as-of failed: %w", err)
+	}
+
+	protoSession, err := toProtoSession(session)
+	if err != nil {
+		return nil, err
+	}
+
+	return &statestore.SessionResponse{Session: protoSession}, nil
 }

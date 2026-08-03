@@ -8,7 +8,6 @@ package statestore
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -23,6 +22,9 @@ const (
 	StateStoreService_CreateSession_FullMethodName        = "/statestore.StateStoreService/CreateSession"
 	StateStoreService_GetSession_FullMethodName           = "/statestore.StateStoreService/GetSession"
 	StateStoreService_ListSessionsByTenant_FullMethodName = "/statestore.StateStoreService/ListSessionsByTenant"
+	StateStoreService_UpdateSession_FullMethodName        = "/statestore.StateStoreService/UpdateSession"
+	StateStoreService_DeleteSession_FullMethodName        = "/statestore.StateStoreService/DeleteSession"
+	StateStoreService_GetSessionAsOf_FullMethodName       = "/statestore.StateStoreService/GetSessionAsOf"
 )
 
 // StateStoreServiceClient is the client API for StateStoreService service.
@@ -35,6 +37,9 @@ type StateStoreServiceClient interface {
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
 	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
 	ListSessionsByTenant(ctx context.Context, in *ListSessionsByTenantRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
+	UpdateSession(ctx context.Context, in *UpdateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
+	DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*DeleteSessionResponse, error)
+	GetSessionAsOf(ctx context.Context, in *GetSessionAsOfRequest, opts ...grpc.CallOption) (*SessionResponse, error)
 }
 
 type stateStoreServiceClient struct {
@@ -75,6 +80,36 @@ func (c *stateStoreServiceClient) ListSessionsByTenant(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *stateStoreServiceClient) UpdateSession(ctx context.Context, in *UpdateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SessionResponse)
+	err := c.cc.Invoke(ctx, StateStoreService_UpdateSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stateStoreServiceClient) DeleteSession(ctx context.Context, in *DeleteSessionRequest, opts ...grpc.CallOption) (*DeleteSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteSessionResponse)
+	err := c.cc.Invoke(ctx, StateStoreService_DeleteSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stateStoreServiceClient) GetSessionAsOf(ctx context.Context, in *GetSessionAsOfRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SessionResponse)
+	err := c.cc.Invoke(ctx, StateStoreService_GetSessionAsOf_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StateStoreServiceServer is the server API for StateStoreService service.
 // All implementations must embed UnimplementedStateStoreServiceServer
 // for forward compatibility.
@@ -85,6 +120,9 @@ type StateStoreServiceServer interface {
 	CreateSession(context.Context, *CreateSessionRequest) (*SessionResponse, error)
 	GetSession(context.Context, *GetSessionRequest) (*SessionResponse, error)
 	ListSessionsByTenant(context.Context, *ListSessionsByTenantRequest) (*ListSessionsResponse, error)
+	UpdateSession(context.Context, *UpdateSessionRequest) (*SessionResponse, error)
+	DeleteSession(context.Context, *DeleteSessionRequest) (*DeleteSessionResponse, error)
+	GetSessionAsOf(context.Context, *GetSessionAsOfRequest) (*SessionResponse, error)
 	mustEmbedUnimplementedStateStoreServiceServer()
 }
 
@@ -103,6 +141,15 @@ func (UnimplementedStateStoreServiceServer) GetSession(context.Context, *GetSess
 }
 func (UnimplementedStateStoreServiceServer) ListSessionsByTenant(context.Context, *ListSessionsByTenantRequest) (*ListSessionsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSessionsByTenant not implemented")
+}
+func (UnimplementedStateStoreServiceServer) UpdateSession(context.Context, *UpdateSessionRequest) (*SessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateSession not implemented")
+}
+func (UnimplementedStateStoreServiceServer) DeleteSession(context.Context, *DeleteSessionRequest) (*DeleteSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteSession not implemented")
+}
+func (UnimplementedStateStoreServiceServer) GetSessionAsOf(context.Context, *GetSessionAsOfRequest) (*SessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetSessionAsOf not implemented")
 }
 func (UnimplementedStateStoreServiceServer) mustEmbedUnimplementedStateStoreServiceServer() {}
 func (UnimplementedStateStoreServiceServer) testEmbeddedByValue()                           {}
@@ -179,6 +226,60 @@ func _StateStoreService_ListSessionsByTenant_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StateStoreService_UpdateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StateStoreServiceServer).UpdateSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StateStoreService_UpdateSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StateStoreServiceServer).UpdateSession(ctx, req.(*UpdateSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StateStoreService_DeleteSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StateStoreServiceServer).DeleteSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StateStoreService_DeleteSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StateStoreServiceServer).DeleteSession(ctx, req.(*DeleteSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StateStoreService_GetSessionAsOf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionAsOfRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StateStoreServiceServer).GetSessionAsOf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: StateStoreService_GetSessionAsOf_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StateStoreServiceServer).GetSessionAsOf(ctx, req.(*GetSessionAsOfRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // StateStoreService_ServiceDesc is the grpc.ServiceDesc for StateStoreService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -197,6 +298,18 @@ var StateStoreService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSessionsByTenant",
 			Handler:    _StateStoreService_ListSessionsByTenant_Handler,
+		},
+		{
+			MethodName: "UpdateSession",
+			Handler:    _StateStoreService_UpdateSession_Handler,
+		},
+		{
+			MethodName: "DeleteSession",
+			Handler:    _StateStoreService_DeleteSession_Handler,
+		},
+		{
+			MethodName: "GetSessionAsOf",
+			Handler:    _StateStoreService_GetSessionAsOf_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

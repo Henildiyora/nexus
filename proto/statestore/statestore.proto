@@ -15,6 +15,11 @@ service StateStoreService {
   rpc CreateSession (CreateSessionRequest) returns (SessionResponse);
   rpc GetSession (GetSessionRequest) returns (SessionResponse);
   rpc ListSessionsByTenant (ListSessionsByTenantRequest) returns (ListSessionsResponse);
+
+  rpc UpdateSession (UpdateSessionRequest) returns (SessionResponse);
+  rpc DeleteSession (DeleteSessionRequest) returns (DeleteSessionResponse);
+  rpc GetSessionAsOf (GetSessionAsOfRequest) returns (SessionResponse);
+
 }
 
 // --- Messages (these are "structs" in protobuf language)
@@ -32,6 +37,27 @@ message GetSessionRequest {
 
 message ListSessionsByTenantRequest {
   string tenant_id = 1;
+}
+
+message UpdateSessionRequest {
+  string id = 1;
+  string tenant_id = 2;
+  google.protobuf.Struct state = 3;
+}
+
+message DeleteSessionRequest {
+  string id = 1;
+  string tenant_id = 2;
+}
+
+message DeleteSessionResponse {
+  bool sucess = 1;
+}
+
+message GetSessionAsOfRequest {
+  string id = 1;
+  string tenant_id = 2;
+  string interval = 3;
 }
 
 message Session {

@@ -65,4 +65,69 @@ func main() {
 		log.Fatalf("ListSessionsByTenant failed: %v", err)
 	}
 	fmt.Printf("Tenant has %d sessions (via gRPC)\n", len(listResp.Sessions))
+
+	// -- Test UpdateSession via gRPC --
+	newStateStruct, err := structpb.NewStruct(map[string]interface{}{
+		"note":  "updated via gRPC client",
+		"stage": 2,
+	})
+	if err != nil {
+		log.Fatalf("failed to build struct: %v", err)
+	}
+
+	updateResp, err := client.UpdateSession(ctx, &statestorepb.UpdateSessionRequest{
+		Id:       createResp.Session.Id,
+		TenantId: "tenant-henil",
+		State:    newStateStruct,
+	})
+	if err != nil {
+		log.Fatalf("UpdateSession failed: %v", err)
+	}
+	fmt.Printf("UpdatedSession sucessfully: %+v", updateResp.Session)
+
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel2()
+
+	// -- Test GetSessionAsOf via gRPC --
+	time.Sleep(11 * time.Second) // give a clean gap before checking history
+
+	asOfResp, err := client.GetSessionAsOf(ctx2, &statestorepb.GetSessionAsOfRequest{
+		Id:       createResp.Session.Id,
+		TenantId: "tenant-henil",
+		Interval: "10 seconds",
+	})
+	if err != nil {
+		log.Fatalf("GetSessionAsOf failed: %v", err)
+	}
+	fmt.Printf("Session ~10s ago: %+v\n", asOfResp.Session)
+
+	// --- Test bad interval format (should be rejected by our regex guard) ---
+	_, err = client.GetSessionAsOf(ctx2, &statestorepb.GetSessionAsOfRequest{
+		Id:       createResp.Session.Id,
+		TenantId: "tenant-henil",
+		Interval: "5; DROP TABLE agent_sessions;", // deliberately malicious-looking input
+	})
+	if err != nil {
+		fmt.Println("Correctly rejected malicious interval:", err)
+	}
+
+	// --- Test DeleteSession via gRPC ---
+	deleteResp, err := client.DeleteSession(ctx2, &statestorepb.DeleteSessionRequest{
+		Id:       createResp.Session.Id,
+		TenantId: "tenant-henil",
+	})
+	if err != nil {
+		log.Fatalf("DeleteSession failed: %v", err)
+	}
+	fmt.Printf("Delete success: %v\n", deleteResp.Sucess)
+
+	// Confirm it's gone
+	_, err = client.GetSession(ctx2, &statestorepb.GetSessionRequest{
+		Id:       createResp.Session.Id,
+		TenantId: "tenant-henil",
+	})
+	if err != nil {
+		fmt.Println("Correctly confirmed deletion via gRPC:", err)
+	}
+
 }

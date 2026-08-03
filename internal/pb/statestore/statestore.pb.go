@@ -179,6 +179,222 @@ func (x *ListSessionsByTenantRequest) GetTenantId() string {
 	return ""
 }
 
+type UpdateSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	State         *structpb.Struct       `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSessionRequest) Reset() {
+	*x = UpdateSessionRequest{}
+	mi := &file_statestore_statestore_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSessionRequest) ProtoMessage() {}
+
+func (x *UpdateSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_statestore_statestore_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSessionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSessionRequest) Descriptor() ([]byte, []int) {
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UpdateSessionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *UpdateSessionRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *UpdateSessionRequest) GetState() *structpb.Struct {
+	if x != nil {
+		return x.State
+	}
+	return nil
+}
+
+type DeleteSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSessionRequest) Reset() {
+	*x = DeleteSessionRequest{}
+	mi := &file_statestore_statestore_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSessionRequest) ProtoMessage() {}
+
+func (x *DeleteSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_statestore_statestore_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSessionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteSessionRequest) Descriptor() ([]byte, []int) {
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DeleteSessionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DeleteSessionRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+type DeleteSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sucess        bool                   `protobuf:"varint,1,opt,name=sucess,proto3" json:"sucess,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSessionResponse) Reset() {
+	*x = DeleteSessionResponse{}
+	mi := &file_statestore_statestore_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSessionResponse) ProtoMessage() {}
+
+func (x *DeleteSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_statestore_statestore_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSessionResponse.ProtoReflect.Descriptor instead.
+func (*DeleteSessionResponse) Descriptor() ([]byte, []int) {
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteSessionResponse) GetSucess() bool {
+	if x != nil {
+		return x.Sucess
+	}
+	return false
+}
+
+type GetSessionAsOfRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,2,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Interval      string                 `protobuf:"bytes,3,opt,name=interval,proto3" json:"interval,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSessionAsOfRequest) Reset() {
+	*x = GetSessionAsOfRequest{}
+	mi := &file_statestore_statestore_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSessionAsOfRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSessionAsOfRequest) ProtoMessage() {}
+
+func (x *GetSessionAsOfRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_statestore_statestore_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSessionAsOfRequest.ProtoReflect.Descriptor instead.
+func (*GetSessionAsOfRequest) Descriptor() ([]byte, []int) {
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetSessionAsOfRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetSessionAsOfRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
+}
+
+func (x *GetSessionAsOfRequest) GetInterval() string {
+	if x != nil {
+		return x.Interval
+	}
+	return ""
+}
+
 type Session struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -193,7 +409,7 @@ type Session struct {
 
 func (x *Session) Reset() {
 	*x = Session{}
-	mi := &file_statestore_statestore_proto_msgTypes[3]
+	mi := &file_statestore_statestore_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -205,7 +421,7 @@ func (x *Session) String() string {
 func (*Session) ProtoMessage() {}
 
 func (x *Session) ProtoReflect() protoreflect.Message {
-	mi := &file_statestore_statestore_proto_msgTypes[3]
+	mi := &file_statestore_statestore_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -218,7 +434,7 @@ func (x *Session) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Session.ProtoReflect.Descriptor instead.
 func (*Session) Descriptor() ([]byte, []int) {
-	return file_statestore_statestore_proto_rawDescGZIP(), []int{3}
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Session) GetId() string {
@@ -272,7 +488,7 @@ type SessionResponse struct {
 
 func (x *SessionResponse) Reset() {
 	*x = SessionResponse{}
-	mi := &file_statestore_statestore_proto_msgTypes[4]
+	mi := &file_statestore_statestore_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -284,7 +500,7 @@ func (x *SessionResponse) String() string {
 func (*SessionResponse) ProtoMessage() {}
 
 func (x *SessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_statestore_statestore_proto_msgTypes[4]
+	mi := &file_statestore_statestore_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -297,7 +513,7 @@ func (x *SessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionResponse.ProtoReflect.Descriptor instead.
 func (*SessionResponse) Descriptor() ([]byte, []int) {
-	return file_statestore_statestore_proto_rawDescGZIP(), []int{4}
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SessionResponse) GetSession() *Session {
@@ -316,7 +532,7 @@ type ListSessionsResponse struct {
 
 func (x *ListSessionsResponse) Reset() {
 	*x = ListSessionsResponse{}
-	mi := &file_statestore_statestore_proto_msgTypes[5]
+	mi := &file_statestore_statestore_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -328,7 +544,7 @@ func (x *ListSessionsResponse) String() string {
 func (*ListSessionsResponse) ProtoMessage() {}
 
 func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_statestore_statestore_proto_msgTypes[5]
+	mi := &file_statestore_statestore_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -341,7 +557,7 @@ func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_statestore_statestore_proto_rawDescGZIP(), []int{5}
+	return file_statestore_statestore_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListSessionsResponse) GetSessions() []*Session {
@@ -365,7 +581,20 @@ const file_statestore_statestore_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\ttenant_id\x18\x02 \x01(\tR\btenantId\":\n" +
 	"\x1bListSessionsByTenantRequest\x12\x1b\n" +
-	"\ttenant_id\x18\x01 \x01(\tR\btenantId\"\xf6\x01\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\"r\n" +
+	"\x14UpdateSessionRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12-\n" +
+	"\x05state\x18\x03 \x01(\v2\x17.google.protobuf.StructR\x05state\"C\n" +
+	"\x14DeleteSessionRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\"/\n" +
+	"\x15DeleteSessionResponse\x12\x16\n" +
+	"\x06sucess\x18\x01 \x01(\bR\x06sucess\"`\n" +
+	"\x15GetSessionAsOfRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
+	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12\x1a\n" +
+	"\binterval\x18\x03 \x01(\tR\binterval\"\xf6\x01\n" +
 	"\aSession\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\bagent_id\x18\x02 \x01(\tR\aagentId\x12\x1b\n" +
@@ -378,12 +607,15 @@ const file_statestore_statestore_proto_rawDesc = "" +
 	"\x0fSessionResponse\x12-\n" +
 	"\asession\x18\x01 \x01(\v2\x13.statestore.SessionR\asession\"G\n" +
 	"\x14ListSessionsResponse\x12/\n" +
-	"\bsessions\x18\x01 \x03(\v2\x13.statestore.SessionR\bsessions2\x90\x02\n" +
+	"\bsessions\x18\x01 \x03(\v2\x13.statestore.SessionR\bsessions2\x88\x04\n" +
 	"\x11StateStoreService\x12N\n" +
 	"\rCreateSession\x12 .statestore.CreateSessionRequest\x1a\x1b.statestore.SessionResponse\x12H\n" +
 	"\n" +
 	"GetSession\x12\x1d.statestore.GetSessionRequest\x1a\x1b.statestore.SessionResponse\x12a\n" +
-	"\x14ListSessionsByTenant\x12'.statestore.ListSessionsByTenantRequest\x1a .statestore.ListSessionsResponseB5Z3github.com/Henildiyora/nexus/internal/pb/statestoreb\x06proto3"
+	"\x14ListSessionsByTenant\x12'.statestore.ListSessionsByTenantRequest\x1a .statestore.ListSessionsResponse\x12N\n" +
+	"\rUpdateSession\x12 .statestore.UpdateSessionRequest\x1a\x1b.statestore.SessionResponse\x12T\n" +
+	"\rDeleteSession\x12 .statestore.DeleteSessionRequest\x1a!.statestore.DeleteSessionResponse\x12P\n" +
+	"\x0eGetSessionAsOf\x12!.statestore.GetSessionAsOfRequest\x1a\x1b.statestore.SessionResponseB5Z3github.com/Henildiyora/nexus/internal/pb/statestoreb\x06proto3"
 
 var (
 	file_statestore_statestore_proto_rawDescOnce sync.Once
@@ -397,35 +629,46 @@ func file_statestore_statestore_proto_rawDescGZIP() []byte {
 	return file_statestore_statestore_proto_rawDescData
 }
 
-var file_statestore_statestore_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_statestore_statestore_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_statestore_statestore_proto_goTypes = []any{
 	(*CreateSessionRequest)(nil),        // 0: statestore.CreateSessionRequest
 	(*GetSessionRequest)(nil),           // 1: statestore.GetSessionRequest
 	(*ListSessionsByTenantRequest)(nil), // 2: statestore.ListSessionsByTenantRequest
-	(*Session)(nil),                     // 3: statestore.Session
-	(*SessionResponse)(nil),             // 4: statestore.SessionResponse
-	(*ListSessionsResponse)(nil),        // 5: statestore.ListSessionsResponse
-	(*structpb.Struct)(nil),             // 6: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil),       // 7: google.protobuf.Timestamp
+	(*UpdateSessionRequest)(nil),        // 3: statestore.UpdateSessionRequest
+	(*DeleteSessionRequest)(nil),        // 4: statestore.DeleteSessionRequest
+	(*DeleteSessionResponse)(nil),       // 5: statestore.DeleteSessionResponse
+	(*GetSessionAsOfRequest)(nil),       // 6: statestore.GetSessionAsOfRequest
+	(*Session)(nil),                     // 7: statestore.Session
+	(*SessionResponse)(nil),             // 8: statestore.SessionResponse
+	(*ListSessionsResponse)(nil),        // 9: statestore.ListSessionsResponse
+	(*structpb.Struct)(nil),             // 10: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),       // 11: google.protobuf.Timestamp
 }
 var file_statestore_statestore_proto_depIdxs = []int32{
-	6, // 0: statestore.CreateSessionRequest.state:type_name -> google.protobuf.Struct
-	6, // 1: statestore.Session.state:type_name -> google.protobuf.Struct
-	7, // 2: statestore.Session.created_at:type_name -> google.protobuf.Timestamp
-	7, // 3: statestore.Session.updated_at:type_name -> google.protobuf.Timestamp
-	3, // 4: statestore.SessionResponse.session:type_name -> statestore.Session
-	3, // 5: statestore.ListSessionsResponse.sessions:type_name -> statestore.Session
-	0, // 6: statestore.StateStoreService.CreateSession:input_type -> statestore.CreateSessionRequest
-	1, // 7: statestore.StateStoreService.GetSession:input_type -> statestore.GetSessionRequest
-	2, // 8: statestore.StateStoreService.ListSessionsByTenant:input_type -> statestore.ListSessionsByTenantRequest
-	4, // 9: statestore.StateStoreService.CreateSession:output_type -> statestore.SessionResponse
-	4, // 10: statestore.StateStoreService.GetSession:output_type -> statestore.SessionResponse
-	5, // 11: statestore.StateStoreService.ListSessionsByTenant:output_type -> statestore.ListSessionsResponse
-	9, // [9:12] is the sub-list for method output_type
-	6, // [6:9] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	10, // 0: statestore.CreateSessionRequest.state:type_name -> google.protobuf.Struct
+	10, // 1: statestore.UpdateSessionRequest.state:type_name -> google.protobuf.Struct
+	10, // 2: statestore.Session.state:type_name -> google.protobuf.Struct
+	11, // 3: statestore.Session.created_at:type_name -> google.protobuf.Timestamp
+	11, // 4: statestore.Session.updated_at:type_name -> google.protobuf.Timestamp
+	7,  // 5: statestore.SessionResponse.session:type_name -> statestore.Session
+	7,  // 6: statestore.ListSessionsResponse.sessions:type_name -> statestore.Session
+	0,  // 7: statestore.StateStoreService.CreateSession:input_type -> statestore.CreateSessionRequest
+	1,  // 8: statestore.StateStoreService.GetSession:input_type -> statestore.GetSessionRequest
+	2,  // 9: statestore.StateStoreService.ListSessionsByTenant:input_type -> statestore.ListSessionsByTenantRequest
+	3,  // 10: statestore.StateStoreService.UpdateSession:input_type -> statestore.UpdateSessionRequest
+	4,  // 11: statestore.StateStoreService.DeleteSession:input_type -> statestore.DeleteSessionRequest
+	6,  // 12: statestore.StateStoreService.GetSessionAsOf:input_type -> statestore.GetSessionAsOfRequest
+	8,  // 13: statestore.StateStoreService.CreateSession:output_type -> statestore.SessionResponse
+	8,  // 14: statestore.StateStoreService.GetSession:output_type -> statestore.SessionResponse
+	9,  // 15: statestore.StateStoreService.ListSessionsByTenant:output_type -> statestore.ListSessionsResponse
+	8,  // 16: statestore.StateStoreService.UpdateSession:output_type -> statestore.SessionResponse
+	5,  // 17: statestore.StateStoreService.DeleteSession:output_type -> statestore.DeleteSessionResponse
+	8,  // 18: statestore.StateStoreService.GetSessionAsOf:output_type -> statestore.SessionResponse
+	13, // [13:19] is the sub-list for method output_type
+	7,  // [7:13] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_statestore_statestore_proto_init() }
@@ -439,7 +682,7 @@ func file_statestore_statestore_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_statestore_statestore_proto_rawDesc), len(file_statestore_statestore_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
